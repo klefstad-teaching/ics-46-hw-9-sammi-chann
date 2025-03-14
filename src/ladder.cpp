@@ -27,7 +27,7 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
                 dp[i][j] = dp[i-1][j-1];
             else
              {
-                int insert = dp[i][j];
+                int insert = dp[i][j-1];
                 int remove = dp[i-1][j];
                 int replace = dp[i-1][j-1];
 
