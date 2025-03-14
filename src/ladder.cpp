@@ -10,9 +10,6 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
 {
     int str1_len = str1.length();
     int str2_len = str2.length();
-
-    if (abs(str1_len - str2_len) > d)
-        return false;
     
     vector<vector<int>> dp(str1_len + 1, vector<int> (str2_len + 1, 0));
 
