@@ -4,6 +4,7 @@
 #include <queue>
 #include <limits>
 #include <stack>
+#include <algorithm>
 
 using namespace std;
 
@@ -47,6 +48,17 @@ inline void file_to_graph(const string& filename, Graph& G) {
     in.close();
 }
 
+// comp helper function
+struct comp_vertex_weight {
+    constexpr bool operator()(
+        pair<int, int> const& a,
+        pair<int, int> const& b)
+        const noexcept
+    {
+        return a.second > b.second;
+    }
+};
 vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& previous);
 vector<int> extract_shortest_path(const vector<int>& /*distances*/, const vector<int>& previous, int destination);
 void print_path(const vector<int>& v, int total);
+string get_arg(int argc, char *argv[], string def);
