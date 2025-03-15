@@ -50,37 +50,39 @@ bool is_adjacent(const string& word1, const string& word2)
     if (abs(len1 - len2) > 1)
         return false;
     
-    if (len1 == len2)
-    {
-        int dif = 0;
-        for (int i = 0; i < len1; ++i)
-            dif += (word1[i] != word2[i]);
-        return dif == 1;
-    }
+    // if (len1 == len2)
+    // {
+    //     int dif = 0;
+    //     for (int i = 0; i < len1 && dif < 2; ++i)
+    //     {
+    //         dif += (word1[i] != word2[i]);
+    //     }
+    //     return dif <= 1;
+    // }
 
-    string longer;
-    string shorter;
-    string temp;
-    int new_len = max(len1, len2);
-    if (len1 > len2)
-    {
-        longer = word1;
-        shorter = word2;
-    }
-    else
-    {
-        longer = word2;
-        shorter = word1;
-    }
-    for (int i = 0; i < new_len; ++i)
-    {
-        temp = longer.substr(0,i) + longer.substr(i+1);
-        if (temp == shorter)
-            return true;
-    }
-    return false;
+    // string longer;
+    // string shorter;
+    // string temp;
+    // int new_len = max(len1, len2);
+    // if (len1 > len2)
+    // {
+    //     longer = word1;
+    //     shorter = word2;
+    // }
+    // else
+    // {
+    //     longer = word2;
+    //     shorter = word1;
+    // }
+    // for (int i = 0; i < new_len; ++i)
+    // {
+    //     temp = longer.substr(0,i) + longer.substr(i+1);
+    //     if (temp == shorter)
+    //         return true;
+    // }
+    // return false;
     
-    // return edit_distance_within(word1, word2, 1);
+    return edit_distance_within(word1, word2, 1);
 }
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list)
 {
