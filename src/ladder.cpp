@@ -10,6 +10,10 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
 {
     int str1_len = str1.length();
     int str2_len = str2.length();
+
+    // upper and lower bounds
+    if (d < abs(str1_len - str2_len) || d > max(str1_len, str2_len))
+        return false;
     
     vector<vector<int>> dp(str1_len + 1, vector<int> (str2_len + 1, 0));
 
@@ -92,6 +96,7 @@ void print_word_ladder(const vector<string>& ladder)
     cout << "Word ladder found: ";
     for (string word: ladder)
         cout << word << " ";
+    cout << endl;
 }
 #define my_assert(e) {cout << #e << ((e) ? " passed": " failed") << endl;}
 void verify_word_ladder() {
