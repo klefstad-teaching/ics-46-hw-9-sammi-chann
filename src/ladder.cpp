@@ -12,7 +12,7 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
     int str2_len = str2.length();
 
     // upper and lower bounds
-    if (d < abs(str1_len - str2_len) || d > max(str1_len, str2_len))
+    if (d < abs(str1_len - str2_len))
         return false;
     
     vector<vector<int>> dp(str1_len + 1, vector<int> (str2_len + 1, 0));
@@ -45,12 +45,55 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
 }
 bool is_adjacent(const string& word1, const string& word2)
 {
-    return edit_distance_within(word1, word2, 1);
+    int len1 = word1.length();
+    int len2 = word2.length();
+    if (abs(len1 - len2) > 1)
+        return false;
+    
+    if (len1 == len2)
+    {
+        int dif = 0;
+        for (int i = 0; i < len1; ++i)
+            dif += (word1[i] != word2[i]);
+        return dif == 1;
+    }
+
+    string longer;
+    string shorter;
+    string temp;
+    int new_len = max(len1, len2);
+    if (len1 > len2)
+    {
+        longer = word1;
+        shorter = word2;
+    }
+    else
+    {
+        longer = word2;
+        shorter = word1;
+    }
+    for (int i = 0; i < new_len; ++i)
+    {
+        temp = longer.substr(0,i) + longer.substr(i+1);
+        if (temp == shorter)
+            return true;
+    }
+    return false;
+    
+    // return edit_distance_within(word1, word2, 1);
 }
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list)
 {
     if (begin_word == end_word)
+    {
         error("BEGIN AND END WORDS ARE EQUAL", begin_word, end_word);
+        return {};
+    }
+    else if (word_list.find(end_word) == word_list.end())
+    {
+        error("END WORD NOT IN DICTIONARY", begin_word, end_word);
+        return {};
+    }
 
     queue<vector<string>> ladder_queue;
     set<string> visited_words;
