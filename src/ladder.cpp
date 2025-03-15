@@ -4,7 +4,7 @@
 void error(string word1, string word2, string msg)
 {
     cerr << "ERROR: " << msg << endl;
-    throw runtime_error("Error encountered");
+    // throw runtime_error("Error encountered");
 }
 bool edit_distance_within(const std::string& str1, const std::string& str2, int d)
 {
@@ -49,26 +49,26 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
         error("BEGIN AND END WORDS ARE EQUAL", begin_word, end_word);
 
     queue<string> ladder_queue;
-    set<string> visited_words;
+    vector<string> visited_words;
     vector<string> ladder;
 
     ladder_queue.push(begin_word);
-    visited_words.insert(begin_word);
+    visited_words.push_back(begin_word);
 
     while (!ladder_queue.empty())
     {
         string current = ladder_queue.front();
         ladder_queue.pop();
-        visited_words.insert(current);
+        visited_words.push_back(current);
         for (string word : word_list)
         {
             if (is_adjacent(current, word))
             {
-                if (!visited_words.count(word))
+                if (find(visited_words.begin(), visited_words.end(), word) == visited_words.end())
                 {
-                    vector<string> new_ladder = ladder; 
+                    vector<string> new_ladder = visited_words; 
                     new_ladder.push_back(word);
-                    visited_words.insert(word);
+                    visited_words.push_back(word);
                     if (word == end_word)
                         return new_ladder;
                 }
@@ -87,6 +87,12 @@ void load_words(set<string> & word_list, const string& file_name)
 }
 void print_word_ladder(const vector<string>& ladder)
 {
+    if (ladder.empty())
+    {
+        cout << "No word ladder found. \n";
+        return;
+    }
+    cout << "Word ladder found: ";
     for (string word: ladder)
         cout << word << " ";
 }
