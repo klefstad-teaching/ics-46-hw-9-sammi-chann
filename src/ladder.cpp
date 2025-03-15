@@ -48,29 +48,29 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
     if (begin_word == end_word)
         error("BEGIN AND END WORDS ARE EQUAL", begin_word, end_word);
 
-    queue<string> ladder_queue;
-    vector<string> visited_words;
-    vector<string> ladder;
+    queue<vector<string>> ladder_queue;
+    set<string> visited_words;
 
-    ladder_queue.push(begin_word);
-    visited_words.push_back(begin_word);
+    ladder_queue.push({begin_word});
+    visited_words.insert(begin_word);
 
     while (!ladder_queue.empty())
     {
-        string current = ladder_queue.front();
+        vector<string> ladder = ladder_queue.front();
         ladder_queue.pop();
-        visited_words.push_back(current);
+        string last_word = ladder[ladder.size() - 1];
         for (string word : word_list)
         {
-            if (is_adjacent(current, word))
+            if (is_adjacent(last_word, word))
             {
                 if (find(visited_words.begin(), visited_words.end(), word) == visited_words.end())
                 {
-                    vector<string> new_ladder = visited_words; 
+                    vector<string> new_ladder = ladder; 
                     new_ladder.push_back(word);
-                    visited_words.push_back(word);
+                    visited_words.insert(word);
                     if (word == end_word)
                         return new_ladder;
+                    ladder_queue.push(new_ladder);
                 }
             }
         }
@@ -89,7 +89,7 @@ void print_word_ladder(const vector<string>& ladder)
 {
     if (ladder.empty())
     {
-        cout << "No word ladder found. \n";
+        cout << "No word ladder found.\n";
         return;
     }
     cout << "Word ladder found: ";
@@ -99,7 +99,7 @@ void print_word_ladder(const vector<string>& ladder)
 #define my_assert(e) {cout << #e << ((e) ? " passed": " failed") << endl;}
 void verify_word_ladder() {
     set<string> word_list;
-    load_words(word_list, "words.txt");
+    load_words(word_list, "../src/words.txt");
     my_assert(generate_word_ladder("cat", "dog", word_list).size() == 4);
     my_assert(generate_word_ladder("marty", "curls", word_list).size() == 6);
     my_assert(generate_word_ladder("code", "data", word_list).size() == 6);
